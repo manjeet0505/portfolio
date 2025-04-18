@@ -48,4 +48,6 @@ next-env.d.ts
 *.db
 *.sqlite
 
-.vercel
+# Netlify
+.netlify/
+.cache/
