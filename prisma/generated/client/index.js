@@ -153,11 +153,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://neondb_owner:npg_SIzA9TXJp1mq@ep-rough-snow-a5h6mp7f-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require"
+        "value": null
       }
     }
   },
