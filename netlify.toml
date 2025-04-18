@@ -1,0 +1,26 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+[functions]
+  external_node_modules = ["@prisma/client"]
+  node_bundler = "esbuild"
+
+[build.environment]
+  NEXT_RUNTIME = "nodejs"
+
+[dev]
+  framework = "next"
+  targetPort = 3000
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[functions]
+  external_node_modules = ["@prisma/client"]
+  included_files = ["prisma/**/*"] 
