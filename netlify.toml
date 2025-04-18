@@ -10,6 +10,7 @@
 [functions]
   external_node_modules = ["@prisma/client"]
   node_bundler = "esbuild"
+  included_files = ["prisma/**/*"]
 
 [build.environment]
   NEXT_RUNTIME = "nodejs"
@@ -19,8 +20,4 @@
   targetPort = 3000
 
 [[plugins]]
-  package = "@netlify/plugin-nextjs"
-
-[functions]
-  external_node_modules = ["@prisma/client"]
-  included_files = ["prisma/**/*"] 
+  package = "@netlify/plugin-nextjs" 
