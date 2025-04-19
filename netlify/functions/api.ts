@@ -1,5 +1,5 @@
-import { Handler } from '@netlify/functions'
 import { PrismaClient } from '@prisma/client'
+import { Handler } from '@netlify/functions'
 
 const prisma = new PrismaClient()
 
@@ -12,46 +12,38 @@ const handler: Handler = async (event, context) => {
   }
 
   try {
-    const { name, email, subject, message } = JSON.parse(event.body || '{}')
+    const { name, email, message } = JSON.parse(event.body || '{}')
 
-    // Validate input fields
-    if (!name || !email || !subject || !message) {
+    if (!name || !email || !message) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: 'All fields are required' }),
+        body: JSON.stringify({
+          message: 'Name, email, and message are required',
+        }),
       }
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Invalid email format' }),
-      }
-    }
-
-    // Create contact entry in database
     const contact = await prisma.contact.create({
       data: {
         name,
         email,
-        subject,
         message,
-        createdAt: new Date(),
-        updatedAt: new Date()
       },
     })
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'Message sent successfully', contact }),
+      body: JSON.stringify(contact),
     }
   } catch (error) {
-    console.error('Error processing contact form:', error)
+    console.error('Database error:', error)
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Internal server error' }),
+      body: JSON.stringify({ message: 'Internal server error' }),
     }
+  } finally {
+    await prisma.$disconnect()
   }
-} 
+}
+
+export { handler } 
