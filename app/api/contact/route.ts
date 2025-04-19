@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+// Remove global prisma instance
+let prisma: any = null;
 
 export async function POST(request: Request) {
   try {
@@ -13,6 +13,12 @@ export async function POST(request: Request) {
         { error: 'Name, email, and message are required' },
         { status: 400 }
       );
+    }
+
+    // Lazy load PrismaClient
+    const { PrismaClient } = await import('@prisma/client');
+    if (!prisma) {
+      prisma = new PrismaClient();
     }
 
     const contact = await prisma.contact.create({
@@ -30,7 +36,5 @@ export async function POST(request: Request) {
       { error: 'Internal server error' },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 } 

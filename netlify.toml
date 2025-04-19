@@ -9,7 +9,16 @@
 
 [functions]
   node_bundler = "esbuild"
-  external_node_modules = ["@prisma/client"]
+  external_node_modules = ["@prisma/client", "next", "react", "react-dom"]
+  included_files = ["node_modules/.prisma/client/query-engine*"]
+
+[functions.node_bundler_flags]
+  minify = true
+  keep_names = false
+  tree_shaking = true
+  target = "node18"
+  platform = "node"
+  external = ["sharp"]
 
 [build.environment]
   NEXT_RUNTIME = "nodejs"

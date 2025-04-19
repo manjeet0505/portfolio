@@ -43,6 +43,8 @@ next-env.d.ts
 # Prisma
 /prisma/*.db
 /prisma/migrations/
+node_modules/.prisma
+prisma/schema.prisma
 
 # Netlify
 .netlify/
